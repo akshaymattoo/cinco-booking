@@ -77,6 +77,13 @@ async function book ()  {
       page.click('input:has-text("Sign In")')
     ]);
     
+    // move two weeks ahead
+    // Click #NextWeek img
+    await page.click('#NextWeek img');
+    //await expect(page).toHaveURL('https://sites.onlinecourtreservations.com/reservations');
+    // Click #NextWeek img
+    await page.click('#NextWeek img');
+
     // Now I will book the 6-7 Nl2 court
     await page.click(court.sel6);
     await page.selectOption('select[name="Court_Num"]', court.id);
