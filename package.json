@@ -15,7 +15,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node 6-8-MF/nl2.js & node demo/ws1.js",
-    "prod": "node 6-8-MF/nl2.js"
+    "start": "node 6-8-MF/nl2.js"
   },
   "keywords": [],
   "author": "",
