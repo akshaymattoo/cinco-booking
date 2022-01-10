@@ -3,7 +3,7 @@ require('dotenv').config();
 //const envs = result.parsed;
 var cron = require('node-cron');
 //cron.schedule('0 55 11 * * 1-7', async () => { //* 0 7 * * 1-5
-cron.schedule('*/2 * * * * *', async () => { //* 0 7 * * 1-5
+cron.schedule('*/20000000000 * * * * *', async () => { //* 0 7 * * 1-5
     console.log('running a task 15 seconds');
     console.log(process.env.RAM_USERNAME);
     //const bk = await book();
