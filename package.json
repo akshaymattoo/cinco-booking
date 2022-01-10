@@ -1,0 +1,23 @@
+{
+  "name": "cinco-tennis-booking-system",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "node-cron": "^3.0.0",
+    "playwright": "^1.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node 6-8-MF/nl2.js & node demo/ws1.js",
+    "prod": "node 6-8-MF/nl2.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
