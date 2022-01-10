@@ -1,10 +1,11 @@
 const { chromium } = require('playwright');
-const ENV = require('dotenv').config().parsed;
+require('dotenv').config();
+//const envs = result.parsed;
 var cron = require('node-cron');
 //cron.schedule('0 55 11 * * 1-7', async () => { //* 0 7 * * 1-5
-cron.schedule('*/15000 * * * * *', async () => { //* 0 7 * * 1-5
+cron.schedule('*/2 * * * * *', async () => { //* 0 7 * * 1-5
     console.log('running a task 15 seconds');
-    console.log(ENV.RAM_USERNAME);
+    console.log(process.env.RAM_USERNAME);
     //const bk = await book();
 });
 async function book ()  {
@@ -29,11 +30,11 @@ async function book ()  {
   // Click [placeholder="User ID"]
   await page.click('[placeholder="User ID"]');
   // Fill [placeholder="User ID"]
-  await page.fill('[placeholder="User ID"]', ENV.RAM_USERNAME);
+  await page.fill('[placeholder="User ID"]', process.env.RAM_USERNAME);
   // Click [placeholder="Password"]
   await page.click('[placeholder="Password"]');
   // Fill [placeholder="Password"]
-  await page.fill('[placeholder="Password"]', ENV.RAM_USERNAME);  
+  await page.fill('[placeholder="Password"]', process.env.RAM_PASSWORD);  
   // Click input:has-text("Sign In")
   await Promise.all([
     page.waitForNavigation(/*{ url: 'https://sites.onlinecourtreservations.com/reservations' }*/),
