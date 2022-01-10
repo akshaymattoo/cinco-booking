@@ -2,7 +2,7 @@ const { chromium } = require('playwright');
 const ENV = require('dotenv').config().parsed;
 var cron = require('node-cron');
 //cron.schedule('0 55 11 * * 1-7', async () => { //* 0 7 * * 1-5
-cron.schedule('*/15 * * * * *', async () => { //* 0 7 * * 1-5
+cron.schedule('*/15000 * * * * *', async () => { //* 0 7 * * 1-5
     console.log('running a task 15 seconds');
     console.log(ENV.RAM_USERNAME);
     //const bk = await book();
