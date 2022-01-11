@@ -123,8 +123,6 @@ async function book ()  {
 
   } catch (err) {
     console.log(err);
-    await context.close();
-    await browser.close();
   } finally {
     console.log('closing the browser in finally');
     await context.close();
