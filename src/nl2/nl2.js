@@ -145,7 +145,7 @@ async function book ()  {
 
 async function test ()  {
   let context;
-  let browser
+  let browser;
   try{
     console.log('inside the test function');
     /*const browser = await chromium.launch({
