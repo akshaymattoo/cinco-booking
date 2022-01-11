@@ -1,4 +1,4 @@
-const { chromium } = require('playwright');
+const pw = require('playwright');
 const express = require('express');
 const router = express.Router();
 const https = require('https');
@@ -54,9 +54,10 @@ async function book ()  {
   let browser
   try{
     console.log('inside the book function');
-    const browser = await chromium.launch({
+    /*const browser = await chromium.launch({
       headless: true
-    });
+    });*/
+    browser = await pw["chromium"].launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
     context = await browser.newContext();
     // Open new page
     const page = await context.newPage();
