@@ -152,7 +152,8 @@ async function test ()  {
       headless: true
     });*/
     browser = await chromium.launch({
-      chromiumSandbox: false
+      chromiumSandbox: false,
+      headless: true
     }); //{args: ['--no-sandbox', '--disable-setuid-sandbox']}
     context = await browser.newContext();
     // Open new page
