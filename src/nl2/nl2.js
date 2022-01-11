@@ -57,6 +57,16 @@ router.get('/test', async (req, res, next) => {
     next(err);
   }
 });
+
+router.get('/list', async (req, res, next) => {
+  console.log('List all the tasks');
+  try {
+    let list = cron.getTasks();
+    res.send(list);
+  } catch (err) {
+    next(err);
+  }
+});
 //cron.schedule('0 55 11 * * 1-7', async () => { //* 0 7 * * 1-5
 
 async function book ()  {
@@ -127,16 +137,11 @@ async function book ()  {
       page.waitForNavigation(/*{ url: 'https://sites.onlinecourtreservations.com/Reservations' }*/),
       page.click('input:has-text("Reserve")')
     ]);
-    
-    // Closing the browser
-    console.log("closing the browser in book function");
-    await context.close();
-    await browser.close();
 
   } catch (err) {
     console.log(err);
   } finally {
-    console.log('closing the browser in finally');
+    console.log('closing the browser in book finally');
     await context.close();
     await browser.close();
   }
@@ -147,7 +152,7 @@ async function test ()  {
   let context;
   let browser;
 
-  
+
   try{
     console.log('inside the test function');
     /*const browser = await chromium.launch({
