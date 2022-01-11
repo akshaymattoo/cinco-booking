@@ -55,7 +55,7 @@ async function book ()  {
   try{
     console.log('inside the book function');
     const browser = await chromium.launch({
-      headless: false
+      headless: true
     });
     context = await browser.newContext();
     // Open new page
