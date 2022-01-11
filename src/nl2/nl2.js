@@ -146,6 +146,7 @@ async function book ()  {
 async function test ()  {
   let context;
   let browser;
+
   
   try{
     console.log('inside the test function');
