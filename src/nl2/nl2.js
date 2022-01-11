@@ -1,4 +1,4 @@
-const pw = require('playwright');
+const { chromium } = require('playwright-chromium');
 const express = require('express');
 const router = express.Router();
 const https = require('https');
@@ -47,6 +47,16 @@ router.get('/book', async (req, res, next) => {
     next(err);
   }
 });
+
+router.get('/test', async (req, res, next) => {
+  console.log('inside test');
+  try {
+    await test();
+    res.send('Responding from test');
+  } catch (err) {
+    next(err);
+  }
+});
 //cron.schedule('0 55 11 * * 1-7', async () => { //* 0 7 * * 1-5
 
 async function book ()  {
@@ -57,7 +67,9 @@ async function book ()  {
     /*const browser = await chromium.launch({
       headless: true
     });*/
-    browser = await pw["chromium"].launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
+    browser = await chromium.launch({
+      chromiumSandbox: false
+    }); //{args: ['--no-sandbox', '--disable-setuid-sandbox']}
     context = await browser.newContext();
     // Open new page
     const page = await context.newPage();
@@ -125,6 +137,63 @@ async function book ()  {
     console.log(err);
   } finally {
     console.log('closing the browser in finally');
+    await context.close();
+    await browser.close();
+  }
+
+};
+
+async function test ()  {
+  let context;
+  let browser
+  try{
+    console.log('inside the test function');
+    /*const browser = await chromium.launch({
+      headless: true
+    });*/
+    browser = await chromium.launch({
+      chromiumSandbox: false
+    }); //{args: ['--no-sandbox', '--disable-setuid-sandbox']}
+    context = await browser.newContext();
+    // Open new page
+    const page = await context.newPage();
+    // Go to https://sites.onlinecourtreservations.com/devicecheck?from=default&facility=
+    await page.goto('https://sites.onlinecourtreservations.com/devicecheck?from=default&facility=');
+    // Go to https://sites.onlinecourtreservations.com/facilitycheck
+    await page.goto('https://sites.onlinecourtreservations.com/facilitycheck');
+    // Select 25
+    await page.selectOption('select[name="facility_num"]', '25');
+    // Click text=Continue to Site
+    await page.click('text=Continue to Site');
+    // assert.equal(page.url(), 'https://sites.onlinecourtreservations.com/reservations');
+    // Click text=Sign In
+    await page.click('text=Sign In');
+    // assert.equal(page.url(), 'https://sites.onlinecourtreservations.com/SignIn');
+    // Click [placeholder="User ID"]
+    await page.click('[placeholder="User ID"]');
+    // Fill [placeholder="User ID"]
+    await page.fill('[placeholder="User ID"]', process.env.RAM_USERNAME);
+    // Click [placeholder="Password"]
+    await page.click('[placeholder="Password"]');
+    // Fill [placeholder="Password"]
+    await page.fill('[placeholder="Password"]', process.env.RAM_PASSWORD);  
+    // Click input:has-text("Sign In")
+    await Promise.all([
+      page.waitForNavigation(/*{ url: 'https://sites.onlinecourtreservations.com/reservations' }*/),
+      page.click('input:has-text("Sign In")')
+    ]);
+    
+    // move two weeks ahead
+    // Click #NextWeek img
+    await page.click('#NextWeek img');
+    //await expect(page).toHaveURL('https://sites.onlinecourtreservations.com/reservations');
+    // Click #NextWeek img
+    await page.click('#NextWeek img');
+
+  } catch (err) {
+    console.log(err);
+  } finally {
+    console.log('closing the browser in test finally');
     await context.close();
     await browser.close();
   }
