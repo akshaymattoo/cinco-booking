@@ -12,7 +12,7 @@ router.get('/start', async (req, res, next) => {
   console.log('starting the booking cron job');
   try {
       //task = cron.schedule('50 57 22 * * 1-7', async () => { //0 0 7 * * 1-5
-      task = cron.schedule('0 0 7 * * 1-5', async () => { //
+      task = cron.schedule('30 1 7 * * 1-5', async () => { //
       console.log('running a task 2 seconds');
       const bk = await book();
   }, {
@@ -38,6 +38,15 @@ router.get('/stop', async (req, res, next) => {
   }
 });
 
+router.get('/book', async (req, res, next) => {
+  console.log('starting the booking cron job');
+  try {
+    const bk = await book();
+    res.send('started the cron job');
+  } catch (err) {
+    next(err);
+  }
+});
 //cron.schedule('0 55 11 * * 1-7', async () => { //* 0 7 * * 1-5
 
 async function book ()  {
