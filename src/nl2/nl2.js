@@ -49,13 +49,19 @@ router.get('/book', async (req, res, next) => {
 });
 
 router.get('/test', async (req, res, next) => {
-  console.log('inside test');
   try {
+    //task = cron.schedule('50 57 22 * * 1-7', async () => { //0 0 7 * * 1-5
+    task = cron.schedule('0 */4 * * 1-5', async () => { //
+    console.log('running a task 2 seconds');
     await test();
-    res.send('Responding from test');
-  } catch (err) {
-    next(err);
-  }
+}, {
+  scheduled: true,
+  timezone: "America/Los_Angeles"
+});
+res.send('started the cron job');
+} catch (err) {
+  next(err);
+}
 });
 
 router.get('/list', async (req, res, next) => {
