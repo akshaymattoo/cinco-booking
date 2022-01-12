@@ -12,7 +12,7 @@ router.get('/start', async (req, res, next) => {
   console.log('starting the booking cron job');
   try {
       //task = cron.schedule('50 57 22 * * 1-7', async () => { //0 0 7 * * 1-5
-      task = cron.schedule('30 1 7 * * 1-5', async () => { //
+      task = cron.schedule('55 59 6 * * 1-5', async () => { //
       console.log('running a task 2 seconds');
       const bk = await book();
   }, {
