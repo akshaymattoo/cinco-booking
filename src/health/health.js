@@ -9,7 +9,7 @@ router.get('/', async (req, res, next) => {
   console.log('starting the health cron job');
   try {
       //task = cron.schedule('50 57 22 * * 1-7', async () => { //0 0 7 * * 1-5
-      task = cron.schedule('* * */1 * * *', async () => { //
+      task = cron.schedule('0 * * * *', async () => { //
       //console.log("in every 5th second"+process.env.URL+'test');
       let res = await axios.get(process.env.URL+'test');
       console.log("Every hour result - "+res.data);
