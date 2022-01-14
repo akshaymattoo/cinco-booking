@@ -17,7 +17,7 @@ router.get('/start', async (req, res, next) => {
   try {
       
       //task = cron.schedule('50 57 22 * * 1-7', async () => { //0 0 7 * * 1-5
-      task = cron.schedule('55 59 6 * * 1-5', async () => { //
+      task = cron.schedule('0 7 * * 1-5', async () => { //
       console.log('running a task 2 seconds');
       await book();
       console.log('Cinco page opened !!');
