@@ -8,7 +8,6 @@ async function open (username,password)  {
         headless: true
       });*/
       let browser = await chromium.launch({
-        headless: false,
         chromiumSandbox: false
       }); //{args: ['--no-sandbox', '--disable-setuid-sandbox']}
       let context = await browser.newContext();
