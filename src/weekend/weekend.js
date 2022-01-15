@@ -21,6 +21,10 @@ router.get('/ws1', async (req, res, next) => {
     c=obj.context;
     common.book(p,'tr:nth-child(4) td:nth-child(8)','7','17'); // ws1 8-9
     common.book(p,'tr:nth-child(6) td:nth-child(8)','7','19'); // ws1 9-10
+    await common.sleep(90000);
+    console.log("ws1 done");
+    b.close();
+    c.close();
     }, {
       scheduled: true,
       timezone: "America/Los_Angeles"
@@ -28,12 +32,6 @@ router.get('/ws1', async (req, res, next) => {
     res.json({"message": "weekend job ws1 started"});
   } catch (err) {
     next(err);
-  }finally {
-    await common.sleep(90000);
-    console.log("ws1 done");
-   // common.browser.close();
-    b.close();
-    c.close();
   }
 });
 
@@ -48,6 +46,10 @@ router.get('/ws2', async (req, res, next) => {
       c=obj.context;
       common.book(p,'tr:nth-child(4) td:nth-child(9)','8','17'); // ws2 8-9
       common.book(p,'tr:nth-child(6) td:nth-child(9)','8','19'); // ws2 9-10
+      await common.sleep(90000);
+      console.log("ws2 done");
+      b.close();
+      c.close();
     }, {
       scheduled: true,
       timezone: "America/Los_Angeles"
@@ -55,11 +57,6 @@ router.get('/ws2', async (req, res, next) => {
     res.json({"message": "weekend job ws2 started"});
   } catch (err) {
     next(err);
-  }finally{
-    await common.sleep(90000);
-    console.log("ws2 done");
-    b.close();
-    c.close();
   }
 });
 
@@ -74,6 +71,10 @@ router.get('/ws3', async (req, res, next) => {
       c=obj.context;
       common.book(p,'tr:nth-child(4) td:nth-child(10)','9','17'); // ws3 8-9
       common.book(p,'tr:nth-child(6) td:nth-child(10)','9','19'); // ws3 9-10
+      await common.sleep(90000);
+      console.log("ws3 done");
+      b.close();
+      c.close();
     }, {
       scheduled: true,
       timezone: "America/Los_Angeles"
@@ -81,11 +82,6 @@ router.get('/ws3', async (req, res, next) => {
     res.json({"message": "weekend job ws3 started"});
   } catch (err) {
     next(err);
-  }finally{
-    await common.sleep(90000);
-    console.log("ws3 done");
-    b.close();
-    c.close();
   }
 });
 
@@ -100,6 +96,10 @@ router.get('/ws4', async (req, res, next) => {
       c=obj.context;
       common.book(p,'tr:nth-child(4) td:nth-child(11)','10','17'); // ws4 8-9
       common.book(p,'tr:nth-child(6) td:nth-child(11)','10','19'); // ws4 9-10
+      await common.sleep(90000);
+      console.log("ws4 done");
+      b.close();
+      c.close();
     }, {
       scheduled: true,
       timezone: "America/Los_Angeles"
@@ -107,12 +107,6 @@ router.get('/ws4', async (req, res, next) => {
     res.json({"message": "weekend job ws4 started"});
   } catch (err) {
     next(err);
-  }finally{
-    await common.sleep(90000);
-    console.log("ws4 done");
-    b.close();
-    c.close();
-    
   }
 });
 
@@ -128,6 +122,10 @@ router.get('/ws5', async (req, res, next) => {
       c=obj.context;
       common.book(p,'tr:nth-child(8) td:nth-child(8)','7','21'); // ws1 10-11
       common.book(p,'tr:nth-child(8) td:nth-child(9)','8','21'); // ws2 10-11
+      await common.sleep(90000);
+      console.log("ws5 done");
+      b.close();
+      c.close();
     }, {
       scheduled: true,
       timezone: "America/Los_Angeles"
@@ -135,11 +133,6 @@ router.get('/ws5', async (req, res, next) => {
     res.json({"message": "weekend job ws1 10-11 ws2 10-11 started"});
   } catch (err) {
     next(err);
-  }finally{
-    await common.sleep(90000);
-    console.log("ws5 done");
-    b.close();
-    c.close();
   }
 });
 
@@ -154,6 +147,10 @@ router.get('/ws6', async (req, res, next) => {
       c=obj.context;
       common.book(p,'tr:nth-child(8) td:nth-child(10)','9','21'); // ws3 10-11
       common.book(p,'tr:nth-child(8) td:nth-child(11)','10','21'); // ws4 10-11
+      await common.sleep(90000);
+      console.log("ws6 done");
+      b.close();
+      c.close();
     }, {
       scheduled: true,
       timezone: "America/Los_Angeles"
@@ -161,11 +158,6 @@ router.get('/ws6', async (req, res, next) => {
     res.json({"message": "weekend job ws3 10-11 ws4 10-11 started"});
   } catch (err) {
     next(err);
-  }finally{
-    await common.sleep(90000);
-    console.log("ws6 done");
-    b.close();
-    c.close();
   }
 });
 /*
