@@ -10,7 +10,7 @@ let task;
 let context;
 let browser;
 let page;
-let name = "asd";
+
 // This is api call for fetch all the experiments
 router.get('/start', async (req, res, next) => {
   console.log('starting the booking cron job');
