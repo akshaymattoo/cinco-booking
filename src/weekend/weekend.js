@@ -5,22 +5,19 @@ const cron = require('node-cron');
 const axios = require('axios');
 let task1,task2,task3,task4,task5,task6;
 const common  = require("../common");
-
-router.get('/', async (req, res, next) => {
-  res.json({"message": "weekend job started"});
-});
+const cronTime = "0 7 * * 6-7";
 // This is api call for fetch all the experiments
 router.get('/ws1', async (req, res, next) => {
   console.log('starting the ws1 cron job');
   try {
-    task1 = cron.schedule('0 7 * * 6', async () => {
-    let obj = await common.open(process.env.SUNIL_USERNAME,process.env.SUNIL_PASSWORD);
-    common.book(obj.page,'tr:nth-child(4) td:nth-child(8)','7','17'); // ws1 8-9
-    common.book(obj.page,'tr:nth-child(6) td:nth-child(8)','7','19'); // ws1 9-10
-    await common.sleep(90000);
-    console.log("ws1 done");
-    obj.browser.close();
-    obj.context.close();
+    task1 = cron.schedule(cronTime, async () => {
+      let obj = await common.open(process.env.SUNIL_USERNAME,process.env.SUNIL_PASSWORD);
+      common.book(obj.page,'tr:nth-child(4) td:nth-child(8)','7','17'); // ws1 8-9
+      common.book(obj.page,'tr:nth-child(6) td:nth-child(8)','7','19'); // ws1 9-10
+      await common.sleep(90000);
+      console.log("ws1 done");
+      obj.browser.close();
+      obj.context.close();
     }, {
       scheduled: true,
       timezone: "America/Los_Angeles"
@@ -34,7 +31,7 @@ router.get('/ws1', async (req, res, next) => {
 router.get('/ws2', async (req, res, next) => {
   console.log('starting the ws2 cron job');
   try {
-    task2 = cron.schedule('0 7 * * 6', async () => {
+    task2 = cron.schedule(cronTime, async () => {
       let obj = await common.open(process.env.RAM_USERNAME,process.env.RAM_PASSWORD);
       common.book(obj.page,'tr:nth-child(4) td:nth-child(9)','8','17'); // ws2 8-9
       common.book(obj.page,'tr:nth-child(6) td:nth-child(9)','8','19'); // ws2 9-10
@@ -55,7 +52,7 @@ router.get('/ws2', async (req, res, next) => {
 router.get('/ws3', async (req, res, next) => {
   console.log('starting the ws3 cron job');
   try {
-    task3 = cron.schedule('0 7 * * 6', async () => {
+    task3 = cron.schedule(cronTime, async () => {
       let obj = await common.open(process.env.ANUSHA_USERNAME,process.env.ANUSHA_PASSWORD);
       common.book(obj.page,'tr:nth-child(4) td:nth-child(10)','9','17'); // ws3 8-9
       common.book(obj.page,'tr:nth-child(6) td:nth-child(10)','9','19'); // ws3 9-10
@@ -76,7 +73,7 @@ router.get('/ws3', async (req, res, next) => {
 router.get('/ws4', async (req, res, next) => {
   console.log('starting the ws4 cron job');
   try {
-    task4 = cron.schedule('0 7 * * 6', async () => {
+    task4 = cron.schedule(cronTime, async () => {
       let obj =  await common.open(process.env.RAVI_USERNAME,process.env.RAVI_PASSWORD);
       common.book(obj.page,'tr:nth-child(4) td:nth-child(11)','10','17'); // ws4 8-9
       common.book(obj.page,'tr:nth-child(6) td:nth-child(11)','10','19'); // ws4 9-10
@@ -98,7 +95,7 @@ router.get('/ws4', async (req, res, next) => {
 router.get('/ws5', async (req, res, next) => {
   console.log('starting the ws1 10-11 ws2 10-11 cron job');
   try {
-    task5 = cron.schedule('0 7 * * 6', async () => {
+    task5 = cron.schedule(cronTime, async () => {
       let obj =  await common.open(process.env.ANAND_USERNAME,process.env.ANAND_PASSWORD);
       common.book(obj.page,'tr:nth-child(8) td:nth-child(8)','7','21'); // ws1 10-11
       common.book(obj.page,'tr:nth-child(8) td:nth-child(9)','8','21'); // ws2 10-11
@@ -119,7 +116,7 @@ router.get('/ws5', async (req, res, next) => {
 router.get('/ws6', async (req, res, next) => {
   console.log('starting the ws3 10-11 ws4 10-11 cron job');
   try {
-    task6 = cron.schedule('0 7 * * 6', async () => {
+    task6 = cron.schedule(cronTime, async () => {
       let obj =  await common.open(process.env.UDAYA_USERNAME,process.env.UDAYA_PASSWORD);
       common.book(obj.page,'tr:nth-child(8) td:nth-child(10)','9','21'); // ws3 10-11
       common.book(obj.page,'tr:nth-child(8) td:nth-child(11)','10','21'); // ws4 10-11
@@ -136,6 +133,7 @@ router.get('/ws6', async (req, res, next) => {
     next(err);
   }
 });
+
 /*
 //task = cron.schedule('50 57 2  * * 1-7', async () => { //0 0 7 * * 1-5
     // this job will run every saturday at 7 am

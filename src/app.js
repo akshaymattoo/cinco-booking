@@ -8,7 +8,6 @@ require('dotenv').config();
 const middlewares = require('./middlewares');
 
 const nl2 = require('./nl2');
-const health = require('./health');
 const weekend = require('./weekend');
 
 const app = express();
@@ -28,7 +27,6 @@ app.get('/', (req, res) => {
 
 
 app.use('/api/v1', nl2);
-app.use('/api/v1', health);
 app.use('/api/v1', weekend);
 
 

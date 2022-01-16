@@ -6,6 +6,7 @@ const config = {
             "sel7":"tr:nth-child(26) td:nth-child(2)"
         },
         "ws1":{
+            
         },
     },
     "times":{

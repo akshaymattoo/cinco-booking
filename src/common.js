@@ -1,6 +1,4 @@
 const { chromium } = require('playwright-chromium');
-
-
 async function open (username,password)  {
     try {
       console.log('inside the open common function');
@@ -8,6 +6,7 @@ async function open (username,password)  {
         headless: true
       });*/
       let browser = await chromium.launch({
+        headless: process.env.HEADLESS === 'true',
         chromiumSandbox: false
       }); //{args: ['--no-sandbox', '--disable-setuid-sandbox']}
       let context = await browser.newContext();
