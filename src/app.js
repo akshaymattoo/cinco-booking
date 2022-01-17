@@ -33,7 +33,7 @@ app.get('/startall', async (req, res, next) => {
     }
     axios.all([
       axios.get(url+'/api/v1/weekend/ws1'),
-      axios.get(url+'/api/v1/weekend/ws2'),
+      //axios.get(url+'/api/v1/weekend/ws2'),
       axios.get(url+'/api/v1/weekend/ws3'),
       axios.get(url+'/api/v1/weekend/ws4'),
       axios.get(url+'/api/v1/weekend/ws5'),
