@@ -4,23 +4,25 @@ const router = express.Router();
 const https = require('https');
 const cron = require('node-cron');
 const config = require('../config');
-const court = config.courts.nl2;
-const time = config.times;
+const times = config.times;
 let task;
 const common  = require("../common");
+let cronTime = '0 7 * * 1-5';
+//cronTime = "30 17 12 * * *";
 
 // This is api call for fetch all the experiments
 router.get('/start', async (req, res, next) => {
+  console.log('starting the nl2 cron job');
   try {
       //task = cron.schedule('50 57 22 * * 1-7', async () => { //0 0 7 * * 1-5
-      task = cron.schedule('0 7 * * 1-5', async () => { //
+      task = cron.schedule(cronTime, async () => { //
+        let nl2 = config.courts.nl2;
         let obj = await common.open(process.env.RAM_USERNAME,process.env.RAM_PASSWORD);
-        common.book(obj.page,'tr:nth-child(24) td:nth-child(3)','2','17'); // nl2 6-7
-        common.book(obj.page,'tr:nth-child(26) td:nth-child(2)','2','19'); // nl2 7-8
-        await common.sleep(90000);
-        console.log("nl2 done");
+        await common.book(obj.page,nl2.id,times.eighteen); // nl2 6-7
+        await common.book(obj.page,nl2.id,times.nineteen); // nl2 7-8
         obj.browser.close();
         obj.context.close();
+        console.log(common.getDay()+" nl2 done");
       }, {
         scheduled: true,
         timezone: "America/Los_Angeles"
@@ -68,5 +70,19 @@ router.get('/list', async (req, res, next) => {
     next(err);
   }
 });
+
+router.get('/cancel', async (req, res, next) => {
+  try {
+    let obj = await common.open(process.env.RAM_USERNAME,process.env.RAM_PASSWORD);
+    await common.cancel(obj.page,"Ram Iyer"); // nl2 6-7
+    await common.cancel(obj.page,"Ram Iyer"); // nl2 7-8
+    obj.browser.close();
+    obj.context.close();
+    res.json({"data":"canceled"});
+  } catch (err) {
+    next(err);
+  }
+});
+
 
 module.exports = router;

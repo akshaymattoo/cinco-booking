@@ -2,22 +2,28 @@ const express = require('express');
 const router = express.Router();
 const https = require('https');
 const cron = require('node-cron');
-const axios = require('axios');
 let task1,task2,task3,task4,task5,task6;
 const common  = require("../common");
-const cronTime = "0 7 * * 6-7";
+let  cronTime = "0 7 * * 6-7";
+cronTime = "0 7 * * 1";
+//cronTime = "30 01 17 * * *";
+const config = require('../config');
+const { time } = require('console');
+let times = config.times;
+
+
 // This is api call for fetch all the experiments
 router.get('/ws1', async (req, res, next) => {
   console.log('starting the ws1 cron job');
   try {
     task1 = cron.schedule(cronTime, async () => {
+      let ws1 = config.courts.ws1;
       let obj = await common.open(process.env.SUNIL_USERNAME,process.env.SUNIL_PASSWORD);
-      common.book(obj.page,'tr:nth-child(4) td:nth-child(8)','7','17'); // ws1 8-9
-      common.book(obj.page,'tr:nth-child(6) td:nth-child(8)','7','19'); // ws1 9-10
-      await common.sleep(90000);
-      console.log("ws1 done");
+      await common.book(obj.page,ws1.id,times.eight); // ws1 8-9
+      await common.book(obj.page,ws1.id,times.nine); // ws1 9-10 'tr:nth-child(6) td:nth-child(8)'
       obj.browser.close();
       obj.context.close();
+      console.log("ws1 done");
     }, {
       scheduled: true,
       timezone: "America/Los_Angeles"
@@ -32,13 +38,13 @@ router.get('/ws2', async (req, res, next) => {
   console.log('starting the ws2 cron job');
   try {
     task2 = cron.schedule(cronTime, async () => {
+      let ws2 = config.courts.ws2;
       let obj = await common.open(process.env.RAM_USERNAME,process.env.RAM_PASSWORD);
-      common.book(obj.page,'tr:nth-child(4) td:nth-child(9)','8','17'); // ws2 8-9
-      common.book(obj.page,'tr:nth-child(6) td:nth-child(9)','8','19'); // ws2 9-10
-      await common.sleep(90000);
-      console.log("ws2 done");
+      await common.book(obj.page,ws2.id,times.eight); // ws2 8-9 'tr:nth-child(4) td:nth-child(9)'
+      await common.book(obj.page,ws2.id,times.nine); // ws2 9-10 'tr:nth-child(6) td:nth-child(7)'
       obj.browser.close();
       obj.context.close();
+      console.log("ws2 done");
     }, {
       scheduled: true,
       timezone: "America/Los_Angeles"
@@ -53,13 +59,13 @@ router.get('/ws3', async (req, res, next) => {
   console.log('starting the ws3 cron job');
   try {
     task3 = cron.schedule(cronTime, async () => {
+      let id = config.courts.ws3.id;
       let obj = await common.open(process.env.ANUSHA_USERNAME,process.env.ANUSHA_PASSWORD);
-      common.book(obj.page,'tr:nth-child(4) td:nth-child(10)','9','17'); // ws3 8-9
-      common.book(obj.page,'tr:nth-child(6) td:nth-child(10)','9','19'); // ws3 9-10
-      await common.sleep(90000);
-      console.log("ws3 done");
+      await common.book(obj.page,id,times.eight); // ws3 8-9 'tbody tr td:nth-child(6)'
+      await common.book(obj.page,id,times.nine); // ws3 9-10 'tbody tr td:nth-child(7)'
       obj.browser.close();
       obj.context.close();
+      console.log("ws3 done");
     }, {
       scheduled: true,
       timezone: "America/Los_Angeles"
@@ -74,13 +80,13 @@ router.get('/ws4', async (req, res, next) => {
   console.log('starting the ws4 cron job');
   try {
     task4 = cron.schedule(cronTime, async () => {
+      let id = config.courts.ws4.id;
       let obj =  await common.open(process.env.RAVI_USERNAME,process.env.RAVI_PASSWORD);
-      common.book(obj.page,'tr:nth-child(4) td:nth-child(11)','10','17'); // ws4 8-9
-      common.book(obj.page,'tr:nth-child(6) td:nth-child(11)','10','19'); // ws4 9-10
-      await common.sleep(90000);
-      console.log("ws4 done");
+      await common.book(obj.page,id,times.eight); // ws4 8-9
+      await common.book(obj.page,id,times.nine); // ws4 9-10
       obj.browser.close();
       obj.context.close();
+      console.log("ws4 done");
     }, {
       scheduled: true,
       timezone: "America/Los_Angeles"
@@ -91,18 +97,16 @@ router.get('/ws4', async (req, res, next) => {
   }
 });
 
-
 router.get('/ws5', async (req, res, next) => {
   console.log('starting the ws1 10-11 ws2 10-11 cron job');
   try {
     task5 = cron.schedule(cronTime, async () => {
       let obj =  await common.open(process.env.ANAND_USERNAME,process.env.ANAND_PASSWORD);
-      common.book(obj.page,'tr:nth-child(8) td:nth-child(8)','7','21'); // ws1 10-11
-      common.book(obj.page,'tr:nth-child(8) td:nth-child(9)','8','21'); // ws2 10-11
-      await common.sleep(90000);
-      console.log("ws5 done");
+      await common.book(obj.page,config.courts.ws1.id,times.ten); // ws1 10-11 'tr:nth-child(8) td:nth-child(8)'
+      await common.book(obj.page,config.courts.ws2.id,times.ten); // ws2 10-11 'tr:nth-child(8) td:nth-child(9)'
       obj.browser.close();
       obj.context.close();
+      console.log("ws5 done");
     }, {
       scheduled: true,
       timezone: "America/Los_Angeles"
@@ -118,18 +122,41 @@ router.get('/ws6', async (req, res, next) => {
   try {
     task6 = cron.schedule(cronTime, async () => {
       let obj =  await common.open(process.env.UDAYA_USERNAME,process.env.UDAYA_PASSWORD);
-      common.book(obj.page,'tr:nth-child(8) td:nth-child(10)','9','21'); // ws3 10-11
-      common.book(obj.page,'tr:nth-child(8) td:nth-child(11)','10','21'); // ws4 10-11
-      await common.sleep(90000);
-      console.log("ws6 done");
+      await common.book(obj.page,config.courts.ws3.id,times.ten); // ws3 10-11
+      await common.book(obj.page,config.courts.ws4.id,times.ten); // ws4 10-11
       obj.browser.close();
       obj.context.close();
+      console.log("ws6 done");
     }, {
       scheduled: true,
       timezone: "America/Los_Angeles"
     });
     res.json({"message": "weekend job ws3 10-11 ws4 10-11 started"});
   } catch (err) {
+    next(err);
+  }
+});
+
+router.get('/cancel', async (req, res, next) => {
+  try {
+    let court = req.query.court;
+    switch (court) {
+      case 'ws1':
+        console.log('cancelling ws1 cron job');
+        break;
+      case 'ws2':
+        console.log('cancelling ws2 cron job');
+        break;
+      case 'ws3':
+        console.log('cancelling ws3 cron job');
+        break;
+      case 'ws4':
+        console.log('cancelling ws4 cron job');
+        break;
+    }
+    res.json({"message": "cancelling the cron job for "+court});
+    // Here I will write logic to cancel reservation
+  } catch(err){
     next(err);
   }
 });
