@@ -8,7 +8,7 @@ const times = config.times;
 let task;
 const common  = require("../common");
 let cronTime = '0 7 * * 1-5';
-//cronTime = "30 17 12 * * *";
+cronTime = "0 7 * * *";
 
 // This is api call for fetch all the experiments
 router.get('/start', async (req, res, next) => {

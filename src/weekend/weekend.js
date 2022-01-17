@@ -5,7 +5,7 @@ const cron = require('node-cron');
 let task1,task2,task3,task4,task5,task6;
 const common  = require("../common");
 let  cronTime = "0 7 * * 6-7";
-cronTime = "0 7 * * 1";
+cronTime = "0 7 * * *";
 //cronTime = "30 01 17 * * *";
 const config = require('../config');
 const { time } = require('console');
