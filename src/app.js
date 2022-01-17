@@ -32,11 +32,11 @@ app.get('/startall', async (req, res, next) => {
       url = "http://localhost:3000"
     }
     axios.all([
-      axios.get(url+'/api/v1/weekend/ws1'),
+      //axios.get(url+'/api/v1/weekend/ws1'),
       //axios.get(url+'/api/v1/weekend/ws2'),
       axios.get(url+'/api/v1/weekend/ws3'),
       axios.get(url+'/api/v1/weekend/ws4'),
-      axios.get(url+'/api/v1/weekend/ws5'),
+      //axios.get(url+'/api/v1/weekend/ws5'),
       axios.get(url+'/api/v1/weekend/ws6'),
       axios.get(url+'/api/v1/nl2/start')
     ])
