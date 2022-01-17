@@ -8,7 +8,7 @@ const times = config.times;
 let task;
 const common  = require("../common");
 let cronTime = '0 7 * * 1-5';
-cronTime = "30 7 * * *";
+//cronTime = "30 7 * * *";
 
 // This is api call for fetch all the experiments
 router.get('/start', async (req, res, next) => {
@@ -18,8 +18,8 @@ router.get('/start', async (req, res, next) => {
       task = cron.schedule(cronTime, async () => { //
         let nl2 = config.courts.nl2;
         let obj = await common.open(process.env.RAM_USERNAME,process.env.RAM_PASSWORD);
-        await common.book(obj.page,nl2.id,times.ten); // nl2 6-7
-        await common.book(obj.page,nl2.id,times.eleven); // nl2 7-8
+        await common.book(obj.page,nl2.id,times.eighteen); // nl2 6-7
+        await common.book(obj.page,nl2.id,times.nineteen); // nl2 7-8
         await obj.context.close();
         await obj.browser.close();
         console.log(common.getDay()+" nl2 done");
