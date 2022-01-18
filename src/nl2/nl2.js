@@ -48,14 +48,13 @@ router.get('/stop', async (req, res, next) => {
 router.get('/book', async (req, res, next) => {
   console.log('starting the booking cron job');
   try {
-    let obj = await common.open(process.env.RAM_USERNAME,process.env.RAM_PASSWORD);
-    //common.book(obj.page,'tr:nth-child(24) td:nth-child(3)','2','37'); // nl2 6-7
-    //common.book(obj.page,'tr:nth-child(26) td:nth-child(2)','2','39'); // nl2 7-8
-    await common.sleep(5000);
-    console.log("instant book done");
-    obj.browser.close();
-    obj.context.close();
-    res.json({"message": "weekday job nl2 done"});
+    let nl2 = config.courts.nl2;
+        let obj = await common.open(process.env.RAM_USERNAME,process.env.RAM_PASSWORD);
+        await common.book(obj.page,nl2.id,times.eighteen); // nl2 6-7
+        await common.book(obj.page,nl2.id,times.nineteen); // nl2 7-8
+        await obj.context.close();
+        await obj.browser.close();
+        console.log(common.getDay()+" nl2 done");
   } catch (err) {
     next(err);
   }
