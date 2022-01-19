@@ -6,13 +6,18 @@ class Crawler {
     this._password = password;
   }
   static async build (username,password,court,startTime,startTime1) {
-    let crawler = new Crawler(username,password);
-    await crawler._init();
-    await crawler._loginAndNavigate();
-   
-    return crawler;
+    try {
+      let crawler = new Crawler(username,password);
+      await crawler._init();
+      await crawler._loginAndNavigate();
+      return crawler;
+    } catch (err) {
+      console.log("Error in build method");
+      console.log(err);
+    }
   }
   async _init() {
+    try{
       //launch the browser and keep its state
       this._browser = await chromium.launch({
         headless: process.env.HEADLESS === 'true',
@@ -21,6 +26,11 @@ class Crawler {
       this._context = await this._browser.newContext();
       //create a page and keep its state
       this._page = await this._context.newPage();
+    } catch (err) {
+      console.log("Erro in init method");
+    
+     console.log(err);
+    }
   }
   //getter
   get browser() {
@@ -36,6 +46,7 @@ class Crawler {
   }
 
   async _loginAndNavigate() {
+    try{
       //await this._page.goto(url);
       //do whatever is related to the login process
       await this._page.goto('https://sites.onlinecourtreservations.com/devicecheck?from=default&facility=');
@@ -72,10 +83,13 @@ class Crawler {
       //await page.click('#Tomorrow img');
       await this._page.click('#NextWeek img');
       await this._page.click('#NextWeek img');
+    } catch (err) {
+      console.log("Error in _loginAndNavigate");
+      console.log(err);
+    }
   }
 
   async book(court,startTime) {
-
     try {
       //console.log('inside the book common function',court,startTime);
       await this._page.click(".open");
@@ -88,28 +102,39 @@ class Crawler {
         this._page.click('input:has-text("Reserve")')
       ]);
     } catch (err) {
+      console.log("Error in book method");
       console.log(err);
     }
   }
 
   async close() {
-    this._context.close();
-    this._browser.close();
+    try {
+      this._context.close();
+      this._browser.close();
+    } catch (err) {
+      console.log("error in close() ");
+      console.log(err);
+    }
   }
 
   async cancel (name) {
-    // Click text=Ravi Yellisetti
-    await this._page.click('text='+name);
-    // assert.equal(page.url(), 'https://sites.onlinecourtreservations.com/Reserve');
-    // Click text=Cancel Reservation
-    this._page.once('dialog', dialog => {
-      console.log(`Dialog message: ${dialog.message()}`);
-      dialog.dismiss().catch(() => {});
-    });
-    await Promise.all([
-      this._page.waitForNavigation(/*{ url: 'https://sites.onlinecourtreservations.com/Reservations' }*/),
-      this._page.click('text=Cancel Reservation')
-    ]);
+    try{
+      // Click text=Ravi Yellisetti
+      await this._page.click('text='+name);
+      // assert.equal(page.url(), 'https://sites.onlinecourtreservations.com/Reserve');
+      // Click text=Cancel Reservation
+      this._page.once('dialog', dialog => {
+        console.log(`Dialog message: ${dialog.message()}`);
+        dialog.dismiss().catch(() => {});
+      });
+      await Promise.all([
+        this._page.waitForNavigation(/*{ url: 'https://sites.onlinecourtreservations.com/Reservations' }*/),
+        this._page.click('text=Cancel Reservation')
+      ]);
+    } catch (err) {
+      console.log("Error in cancel method");
+      console.log(err);
+    }
   }
 
   async sleep(ms) {
