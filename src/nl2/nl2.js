@@ -54,7 +54,7 @@ router.get('/stop', async (req, res, next) => {
 router.get('/book', async (req, res, next) => {
   console.log('starting the booking cron job');
   try {
-    let nl2 = config.courts.nl2;
+    let nl2 = config.courts.nl2; 
     let usr = process.env.ANAND_USERNAME;
     let pwd = process.env.ANAND_PASSWORD;
     let crawler = await Crawler.build(usr,pwd);

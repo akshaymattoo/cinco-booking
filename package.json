@@ -20,7 +20,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node 6-8-MF/nl2.js & node demo/ws1.js",
-    "local":"nodemon src/server.js",
+    "local": "nodemon src/server.js",
     "start": "node src/server.js",
     "heroku-cleanup": "npx playwright-chromium install"
   },
