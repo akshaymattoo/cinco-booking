@@ -21,7 +21,7 @@ class Crawler {
       //launch the browser and keep its state
       this._browser = await chromium.launch({
         headless: process.env.HEADLESS === 'true',
-        args: ['--no-sandbox'],
+        args: ['--no-sandbox','--disable-dev-shm-usage'],
         chromiumSandbox: false
       });
       this._context = await this._browser.newContext();
