@@ -67,6 +67,7 @@ router.get('/ws3', async (req, res, next) => {
       await crawler.book(ws3.id,times.eight);
       await crawler.sleep(200);
       await crawler.book(ws3.id,times.nine);
+      await crawler.sleep(50000);
       await crawler.close();
       console.log("ws3 done");
     }, {
@@ -91,6 +92,7 @@ router.get('/ws4', async (req, res, next) => {
       await crawler.book(ws4.id,times.eight);
       await crawler.sleep(200);
       await crawler.book(ws4.id,times.nine);
+      await crawler.sleep(45000);
       await crawler.close();
       console.log("ws4 done");
     }, {
