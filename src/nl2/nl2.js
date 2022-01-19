@@ -25,7 +25,7 @@ router.get('/start', async (req, res, next) => {
         await crawler.book(nl2.id,times.eight); //times.eighteen
         await crawler.sleep(200);
         await crawler.book(nl2.id,times.nine); //times.nineteen
-        await crawler.sleep(40000);
+        //await crawler.sleep(40000);
         await crawler.close();
         console.log("nl2 done");
         console.log(getDay()+" nl2 done");
