@@ -46,7 +46,7 @@ const config = {
         "twenty":"41",
         "twentyOne":"43",
     },
-    "cronTime":"45 14 * * *"
+    "cronTime":"50 14 * * *"
 }
 
 module.exports = config;
