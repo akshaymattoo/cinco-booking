@@ -6,9 +6,10 @@ const cron = require('node-cron');
 const config = require('../config');
 const times = config.times;
 let task;
-const common  = require("../common");
+const {Crawler}  = require("../crawler");
 let cronTime = '0 7 * * 1-5';
-//cronTime = "30 7 * * *";
+cronTime = config.cronTime;
+
 
 // This is api call for fetch all the experiments
 router.get('/start', async (req, res, next) => {
@@ -17,12 +18,16 @@ router.get('/start', async (req, res, next) => {
       //task = cron.schedule('50 57 22 * * 1-7', async () => { //0 0 7 * * 1-5
       task = cron.schedule(cronTime, async () => { //
         let nl2 = config.courts.nl2;
-        let obj = await common.open(process.env.RAM_USERNAME,process.env.RAM_PASSWORD);
-        await common.book(obj.page,nl2.id,times.eighteen); // nl2 6-7
-        await common.book(obj.page,nl2.id,times.nineteen); // nl2 7-8
-        await obj.context.close();
-        await obj.browser.close();
-        console.log(common.getDay()+" nl2 done");
+        let usr = process.env.ANAND_USERNAME;
+        let pwd = process.env.ANAND_PASSWORD;
+        let crawler = await Crawler.build(usr,pwd);
+        await crawler.sleep(400);
+        await crawler.book(nl2.id,times.eight); //times.eighteen
+        await crawler.sleep(200);
+        await crawler.book(nl2.id,times.nine); //times.nineteen
+        await crawler.close();
+        console.log("nl2 done");
+        console.log(getDay()+" nl2 done");
       }, {
         scheduled: true,
         timezone: "America/Los_Angeles"
@@ -49,12 +54,16 @@ router.get('/book', async (req, res, next) => {
   console.log('starting the booking cron job');
   try {
     let nl2 = config.courts.nl2;
-        let obj = await common.open(process.env.RAM_USERNAME,process.env.RAM_PASSWORD);
-        await common.book(obj.page,nl2.id,times.eighteen); // nl2 6-7
-        await common.book(obj.page,nl2.id,times.nineteen); // nl2 7-8
-        await obj.context.close();
-        await obj.browser.close();
-        console.log(common.getDay()+" nl2 done");
+    let usr = process.env.ANAND_USERNAME;
+    let pwd = process.env.ANAND_PASSWORD;
+    let crawler = await Crawler.build(usr,pwd);
+    await crawler.sleep(500);
+    await crawler.book(nl2.id,times.eight); //times.eighteen
+    await crawler.book(nl2.id,times.nine); //times.nineteen
+    await crawler.close();
+    console.log("nl2 done");
+    console.log(getDay()+" nl2 done");
+    res.json({"message": "weekday job nl2 started"});
   } catch (err) {
     next(err);
   }
@@ -83,5 +92,24 @@ router.get('/cancel', async (req, res, next) => {
   }
 });
 
-
+function getDay(){
+  try {
+    let day = new Date().getDay();
+    switch(day){
+      case 1:
+        return 'monday';
+      case 2:
+        return 'tuesday';
+      case 3:
+        return 'wednesday';
+      case 4:
+        return 'thursday';
+      case 5:
+        return 'friday';
+      default:
+        return 'weekend';
+  }} catch (err) {
+    console.log(err);
+  }
+}
 module.exports = router;

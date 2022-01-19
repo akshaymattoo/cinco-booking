@@ -3,14 +3,12 @@ const router = express.Router();
 const https = require('https');
 const cron = require('node-cron');
 let task1,task2,task3,task4,task5,task6;
-const common  = require("../common");
+const {Crawler}  = require("../crawler");
 let  cronTime = "0 7 * * 6-7";
-cronTime = " 0 7 * * *";
-//cronTime = "30 01 17 * * *";
 const config = require('../config');
 const { time } = require('console');
 let times = config.times;
-
+cronTime = config.cronTime;
 
 // This is api call for fetch all the experiments
 router.get('/ws1', async (req, res, next) => {
@@ -18,11 +16,12 @@ router.get('/ws1', async (req, res, next) => {
   try {
     task1 = cron.schedule(cronTime, async () => {
       let ws1 = config.courts.ws1;
-      let obj = await common.open(process.env.SUNIL_USERNAME,process.env.SUNIL_PASSWORD);
-      await common.book(obj.page,ws1.id,times.eight); // ws1 8-9
-      await common.book(obj.page,ws1.id,times.nine); // ws1 9-10 'tr:nth-child(6) td:nth-child(8)'
-      await obj.context.close();
-      await obj.browser.close();
+      let usr = process.env.SUNIL_USERNAME;
+      let pwd = process.env.SUNIL_PASSWORD;
+      let crawler = await Crawler.build(usr,pwd);
+      await crawler.book(ws1.id,times.eight);
+      await crawler.book(ws1.id,times.nine);
+      await crawler.close();
       console.log("ws1 done");
     }, {
       scheduled: true,
@@ -39,11 +38,12 @@ router.get('/ws2', async (req, res, next) => {
   try {
     task2 = cron.schedule(cronTime, async () => {
       let ws2 = config.courts.ws2;
-      let obj = await common.open(process.env.RAM_USERNAME,process.env.RAM_PASSWORD);
-      await common.book(obj.page,ws2.id,times.eight); // ws2 8-9 'tr:nth-child(4) td:nth-child(9)'
-      await common.book(obj.page,ws2.id,times.nine); // ws2 9-10 'tr:nth-child(6) td:nth-child(7)'
-      await obj.context.close();
-      await obj.browser.close();
+      let usr = process.env.RAM_USERNAME;
+      let pwd = process.env.RAM_PASSWORD;
+      let crawler = await Crawler.build(usr,pwd);
+      await crawler.book(ws2.id,times.eight);
+      await crawler.book(ws2.id,times.nine);
+      await crawler.close();
       console.log("ws2 done");
     }, {
       scheduled: true,
@@ -59,12 +59,15 @@ router.get('/ws3', async (req, res, next) => {
   console.log('starting the ws3 cron job');
   try {
     task3 = cron.schedule(cronTime, async () => {
-      let id = config.courts.ws3.id;
-      let obj = await common.open(process.env.ANUSHA_USERNAME,process.env.ANUSHA_PASSWORD);
-      await common.book(obj.page,id,times.eight); // ws3 8-9 'tbody tr td:nth-child(6)'
-      await common.book(obj.page,id,times.nine); // ws3 9-10 'tbody tr td:nth-child(7)'
-      await obj.context.close();
-      await obj.browser.close();
+      let ws3 = config.courts.ws3;
+      let usr = process.env.ANUSHA_USERNAME;
+      let pwd = process.env.ANUSHA_PASSWORD;
+      let crawler = await Crawler.build(usr,pwd);
+      await crawler.sleep(400);
+      await crawler.book(ws3.id,times.eight);
+      await crawler.sleep(200);
+      await crawler.book(ws3.id,times.nine);
+      await crawler.close();
       console.log("ws3 done");
     }, {
       scheduled: true,
@@ -80,12 +83,15 @@ router.get('/ws4', async (req, res, next) => {
   console.log('starting the ws4 cron job');
   try {
     task4 = cron.schedule(cronTime, async () => {
-      let id = config.courts.ws4.id;
-      let obj =  await common.open(process.env.RAVI_USERNAME,process.env.RAVI_PASSWORD);
-      await common.book(obj.page,id,times.eight); // ws4 8-9
-      await common.book(obj.page,id,times.nine); // ws4 9-10
-      await obj.context.close();
-      await obj.browser.close();
+      let ws4 = config.courts.ws4;
+      let usr = process.env.RAVI_USERNAME;
+      let pwd = process.env.RAVI_PASSWORD;
+      let crawler = await Crawler.build(usr,pwd);
+      await crawler.sleep(400);
+      await crawler.book(ws4.id,times.eight);
+      await crawler.sleep(200);
+      await crawler.book(ws4.id,times.nine);
+      await crawler.close();
       console.log("ws4 done");
     }, {
       scheduled: true,
@@ -100,12 +106,13 @@ router.get('/ws4', async (req, res, next) => {
 router.get('/ws5', async (req, res, next) => {
   console.log('starting the ws1 10-11 ws2 10-11 cron job');
   try {
-    task5 = cron.schedule(cronTime, async () => {
-      let obj =  await common.open(process.env.ANAND_USERNAME,process.env.ANAND_PASSWORD);
-      await common.book(obj.page,config.courts.ws1.id,times.ten); // ws1 10-11 'tr:nth-child(8) td:nth-child(8)'
-      await common.book(obj.page,config.courts.ws2.id,times.ten); // ws2 10-11 'tr:nth-child(8) td:nth-child(9)'
-      await obj.context.close();
-      await obj.browser.close();
+    task5 = cron.schedule(cronTime, async () => {    
+      let usr = process.env.ANAND_USERNAME;
+      let pwd = process.env.ANAND_PASSWORD;
+      let crawler = await Crawler.build(usr,pwd);
+      await crawler.book(config.courts.ws1.id,times.ten);
+      await crawler.book(config.courts.ws2.id,times.ten);
+      await crawler.close();
       console.log("ws5 done");
     }, {
       scheduled: true,
@@ -120,12 +127,13 @@ router.get('/ws5', async (req, res, next) => {
 router.get('/ws6', async (req, res, next) => {
   console.log('starting the ws3 10-11 ws4 10-11 cron job');
   try {
-    task6 = cron.schedule(cronTime, async () => {
-      let obj =  await common.open(process.env.UDAYA_USERNAME,process.env.UDAYA_PASSWORD);
-      await common.book(obj.page,config.courts.ws3.id,times.ten); // ws3 10-11
-      await common.book(obj.page,config.courts.ws4.id,times.ten); // ws4 10-11
-      await obj.context.close();
-      await obj.browser.close();
+    task6 = cron.schedule(cronTime, async () => { 
+      let usr = process.env.UDAYA_USERNAME;
+      let pwd = process.env.UDAYA_PASSWORD;
+      let crawler = await Crawler.build(usr,pwd);
+      await crawler.book(config.courts.ws3.id,times.ten);
+      await crawler.book(config.courts.ws4.id,times.ten);
+      await crawler.close();
       console.log("ws6 done");
     }, {
       scheduled: true,
@@ -157,6 +165,24 @@ router.get('/cancel', async (req, res, next) => {
     res.json({"message": "cancelling the cron job for "+court});
     // Here I will write logic to cancel reservation
   } catch(err){
+    next(err);
+  }
+});
+
+router.get('/ws7', async (req, res, next) => {
+  console.log('starting the ws3 cron job');
+  try {
+     
+    let ws3 = config.courts.ws3;
+    let usr = process.env.ANUSHA_USERNAME;
+    let pwd = process.env.ANUSHA_PASSWORD;
+    let crawler = await Crawler.build(usr,pwd);
+    await crawler.book(ws3.id,times.eight);
+    await crawler.book(ws3.id,times.nine);
+    console.log("ws7 done");
+     
+    res.json({"message": "weekend job ws3 started"});
+  } catch (err) {
     next(err);
   }
 });

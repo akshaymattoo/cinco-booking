@@ -33,12 +33,12 @@ app.get('/startall', async (req, res, next) => {
     }
     axios.all([
       axios.get(url+'/api/v1/nl2/start'),
-      axios.get(url+'/api/v1/weekend/ws1'),
+      //axios.get(url+'/api/v1/weekend/ws1'),
       //axios.get(url+'/api/v1/weekend/ws2'),
       axios.get(url+'/api/v1/weekend/ws3'),
       axios.get(url+'/api/v1/weekend/ws4'),
-      axios.get(url+'/api/v1/weekend/ws5'),
-      axios.get(url+'/api/v1/weekend/ws6')
+      //axios.get(url+'/api/v1/weekend/ws5'),
+      //axios.get(url+'/api/v1/weekend/ws6')
     ])
     res.json({"message": "All jobs started"});
     // Here I will write logic to cancel reservation
