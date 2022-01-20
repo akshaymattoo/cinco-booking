@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
   });
 });
 
-app.get('/startall', async (req, res, next) => {
+app.get('/nl2', async (req, res, next) => {
   try {
     let env = process.env.NODE_ENV;
     let url = "https://cinco-booking.herokuapp.com";
@@ -32,13 +32,43 @@ app.get('/startall', async (req, res, next) => {
       url = "http://localhost:3000"
     }
     axios.all([
-      axios.get(url+'/api/v1/nl2/start'),
+      axios.get(url+'/api/v1/nl2/first'),
+      axios.get(url+'/api/v1/nl2/second')
+      //axios.get(url+'/api/v1/nl2/start'),
       //axios.get(url+'/api/v1/weekend/ws1'),
       //axios.get(url+'/api/v1/weekend/ws2'),
-      axios.get(url+'/api/v1/weekend/ws3'),
-      axios.get(url+'/api/v1/weekend/ws4'),
+      //axios.get(url+'/api/v1/weekend/ws3'),
+      //axios.get(url+'/api/v1/weekend/ws4'),
       //axios.get(url+'/api/v1/weekend/ws5'),
       //axios.get(url+'/api/v1/weekend/ws6')
+    ])
+    res.json({"message": "All jobs started"});
+    // Here I will write logic to cancel reservation
+  } catch(err){
+    next(err);
+  }
+});
+
+app.get('/weekend', async (req, res, next) => {
+  try {
+    let env = process.env.NODE_ENV;
+    let url = "https://cinco-booking.herokuapp.com";
+    if(env === 'dev'){
+      url = "http://localhost:3000"
+    }
+    axios.all([
+      axios.get(url+'/api/v1/weekend/ws1'),
+      axios.get(url+'/api/v1/weekend/ws1-1'),
+      axios.get(url+'/api/v1/weekend/ws2'),
+      axios.get(url+'/api/v1/weekend/ws2-1'),
+      axios.get(url+'/api/v1/weekend/ws3'),
+      axios.get(url+'/api/v1/weekend/ws3-1'),
+      axios.get(url+'/api/v1/weekend/ws4'),
+      axios.get(url+'/api/v1/weekend/ws4-1'),
+      axios.get(url+'/api/v1/weekend/ws5'),
+      axios.get(url+'/api/v1/weekend/ws5-1'),
+      axios.get(url+'/api/v1/weekend/ws6'),
+      axios.get(url+'/api/v1/weekend/ws6-1')
     ])
     res.json({"message": "All jobs started"});
     // Here I will write logic to cancel reservation

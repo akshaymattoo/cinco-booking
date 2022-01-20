@@ -10,7 +10,6 @@ const {Crawler}  = require("../crawler");
 let cronTime = '0 7 * * 1-5';
 cronTime = config.cronTime;
 
-
 // This is api call for fetch all the experiments
 router.get('/start', async (req, res, next) => {
   console.log('starting the nl2 cron job');
@@ -18,17 +17,63 @@ router.get('/start', async (req, res, next) => {
       //task = cron.schedule('50 57 22 * * 1-7', async () => { //0 0 7 * * 1-5
       task = cron.schedule(cronTime, async () => { //
         let nl2 = config.courts.nl2;
-        let usr = process.env.ANAND_USERNAME;
-        let pwd = process.env.ANAND_PASSWORD;
+        let usr = process.env.RAM_USERNAME;
+        let pwd = process.env.RAM_PASSWORD;
         let crawler = await Crawler.build(usr,pwd);
         await crawler.sleep(400);
-        await crawler.book(nl2.id,times.eight); //times.eighteen
+        await crawler.book(nl2.id,times.eighteen); //times.eighteen
         await crawler.sleep(200);
-        await crawler.book(nl2.id,times.nine); //times.nineteen
+        await crawler.book(nl2.id,times.nineteen); //times.nineteen
         //await crawler.sleep(40000);
         await crawler.close();
-        console.log("nl2 done");
+        
         console.log(getDay()+" nl2 done");
+      }, {
+        scheduled: true,
+        timezone: "America/Los_Angeles"
+      });
+      res.json({"message": "weekday job nl2 started"});
+    } catch (err) {
+      next(err);
+    }
+});
+
+router.get('/first', async (req, res, next) => {
+  console.log('starting the first nl2 cron job');
+  try {
+      //task = cron.schedule('50 57 22 * * 1-7', async () => { //0 0 7 * * 1-5
+      task = cron.schedule(cronTime, async () => { //
+        let nl2 = config.courts.nl2;
+        let usr = process.env.RAM_USERNAME;
+        let pwd = process.env.RAM_PASSWORD;
+        let crawler = await Crawler.build(usr,pwd);
+        //await crawler.sleep(200);
+        await crawler.book(nl2.id,times.eighteen); //times.eighteen
+        await crawler.close();
+        console.log(getDay()+" first nl2 done");
+      }, {
+        scheduled: true,
+        timezone: "America/Los_Angeles"
+      });
+      res.json({"message": "weekday job nl2 started"});
+    } catch (err) {
+      next(err);
+    }
+});
+
+router.get('/second', async (req, res, next) => {
+  console.log('starting the second nl2 cron job');
+  try {
+      //task = cron.schedule('50 57 22 * * 1-7', async () => { //0 0 7 * * 1-5
+      task = cron.schedule(cronTime, async () => { //
+        let nl2 = config.courts.nl2;
+        let usr = process.env.RAM_USERNAME;
+        let pwd = process.env.RAM_PASSWORD;
+        let crawler = await Crawler.build(usr,pwd);
+        //await crawler.sleep(205);
+        await crawler.book(nl2.id,times.nineteen); //times.nineteen
+        await crawler.close();
+        console.log(getDay()+" second nl2 done");
       }, {
         scheduled: true,
         timezone: "America/Los_Angeles"
@@ -55,14 +100,15 @@ router.get('/book', async (req, res, next) => {
   console.log('starting the booking cron job');
   try {
     let nl2 = config.courts.nl2; 
-    let usr = process.env.ANAND_USERNAME;
-    let pwd = process.env.ANAND_PASSWORD;
+    let usr = process.env.RAM_USERNAME;
+    let pwd = process.env.RAM_PASSWORD;
     let crawler = await Crawler.build(usr,pwd);
-    await crawler.sleep(500);
+    await crawler.sleep(400);
     await crawler.book(nl2.id,times.eight); //times.eighteen
+    await crawler.sleep(200);
     await crawler.book(nl2.id,times.nine); //times.nineteen
     await crawler.close();
-    console.log("nl2 done");
+    
     console.log(getDay()+" nl2 done");
     res.json({"message": "weekday job nl2 started"});
   } catch (err) {

@@ -21,7 +21,8 @@ class Crawler {
       //launch the browser and keep its state
       this._browser = await chromium.launch({
         headless: process.env.HEADLESS === 'true',
-        args: ['--no-sandbox','--disable-dev-shm-usage'] //chromiumSandbox: false
+        args: ['--no-sandbox','--disable-dev-shm-usage'],
+        chromiumSandbox: false
       });
       this._context = await this._browser.newContext();
       //create a page and keep its state
@@ -82,7 +83,7 @@ class Crawler {
       //await page.click('#Tomorrow img');
       //await page.click('#Tomorrow img');
       await this._page.click('#NextWeek img');
-      await this.sleep(500);
+      await this.sleep(100);
       await this._page.click('#NextWeek img');
     } catch (err) {
       console.log("Error in _loginAndNavigate");
@@ -98,9 +99,11 @@ class Crawler {
       await this._page.selectOption('select[name="Start_Time"]', startTime);
       // Select 2
       await this._page.selectOption('select[name="Duration"]', '2');
+      
       await Promise.all([
         this._page.waitForNavigation(/*{ url: 'https://sites.onlinecourtreservations.com/Reservations' }*/),
-        this._page.click('input:has-text("Reserve")')
+        //this._page.click('input:has-text("Reserve")')
+        this._page.click('input:has-text("Back to Grid")')
       ]);
     } catch (err) {
       console.log("Error in book method");
